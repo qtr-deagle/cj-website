@@ -380,7 +380,8 @@ h3 { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
   overflow-y: auto; scrollbar-width: none;          /* still scrolls on short screens, just no bar */
 }
 .dialog::-webkit-scrollbar { display: none; }
-html:has(.dialog[open]) { overflow: hidden; }       /* page behind the popup doesn't scroll */
+/* Page behind the popup doesn't scroll. It's on <body>, not <html>: on <html> it broke the sticky navbar */
+body:has(.dialog[open]) { overflow: hidden; }
 .dialog::backdrop { background: rgba(10,10,9,.6); backdrop-filter: blur(4px); }
 .dialog[open] .dialog-card { animation: riseIn .35s var(--ease) both; }
 .dialog[open]::backdrop { animation: fadeIn .25s ease-out both; }
@@ -574,15 +575,27 @@ html:has(.dialog[open]) { overflow: hidden; }       /* page behind the popup doe
   /* Popup becomes a bottom sheet on phones */
   .dialog {
     width: 100%; max-width: 100%; margin: auto 0 0; max-height: 92dvh;
+    overflow: hidden;                                   /* the sheet itself never scrolls */
   }
+  /* Column layout: handle, title, and switch stay put; only the form area below could ever scroll
+     (e.g. when the phone keyboard takes half the screen), so the title never slides away */
   .dialog-card {
-    border-radius: 24px 24px 0 0; border-bottom: 0; gap: 14px;
-    padding: 12px 20px calc(20px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; max-height: 92dvh;
+    border-radius: 24px 24px 0 0; border-bottom: 0; gap: 12px;
+    padding: 12px 20px calc(16px + env(safe-area-inset-bottom));
   }
   .dialog-card::before {
-    content: ""; justify-self: center; width: 40px; height: 4px; border-radius: 4px; background: var(--paper-line);
+    content: ""; flex: none; align-self: center; width: 40px; height: 4px; border-radius: 4px; background: var(--paper-line);
   }
+  .dialog-head, .dialog-card > .segmented { flex: none; }
+  .panel { gap: 12px; min-height: 0; overflow-y: auto; scrollbar-width: none;
+           padding: 4px; margin: -4px; }                /* room so the 3px focus glow on inputs isn't cut off */
+  .panel::-webkit-scrollbar { display: none; }
   .dialog[open] .dialog-card { animation: sheetIn .4s var(--ease) both; }
-  .dialog input, .dialog textarea { font-size: 16px; }   /* 16px stops iPhone from zooming in on tap */
+
+  /* Tighter fields so the whole form fits on a normal phone screen without scrolling */
+  .dialog label { gap: 4px; }
+  .dialog input, .dialog textarea { font-size: 16px; padding: 10px 14px; }   /* 16px stops iPhone from zooming in on tap */
+  .dialog textarea { height: 72px; }                    /* 2 lines instead of 3; it can still grow */
 }
 @keyframes sheetIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
