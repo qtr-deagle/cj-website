@@ -1,0 +1,4 @@
+# Files Cloudflare should NOT publish on the website (same idea as .gitignore)
+.git
+.assetsignore
+images/README.txt
