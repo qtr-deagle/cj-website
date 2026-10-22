@@ -198,6 +198,8 @@ pkgSegs.forEach((btn) => btn.addEventListener("click", () => {
     void num.offsetWidth;
     num.classList.add("swap");
   });
+  // Small screens: if the payment plan is below the fold, scroll just enough to show it changing
+  if (matchMedia("(max-width: 960px)").matches) plan.scrollIntoView({ block: "nearest" });
 }));
 
 /* ---------- Back-to-top button: show after scrolling down, scroll up on click ---------- */
@@ -216,3 +218,13 @@ toggleToTop();
 toTop.addEventListener("click", () => scrollTo({ top: 0 }));   // smooth, because the CSS sets scroll-behavior: smooth
 
 document.getElementById("year").textContent = new Date().getFullYear();
+// Footer shows the site's real address (e.g. cjalamares.something.workers.dev), so it's always right
+if (location.host) document.querySelector("[data-site-host]").textContent = location.host;
+
+// Steps swiper (phones): drop the right-edge fade once you've swiped to the last card
+const steps = document.querySelector(".steps");
+const markStepsEnd = () =>
+  steps.classList.toggle("at-end", steps.scrollLeft + steps.clientWidth >= steps.scrollWidth - 4);
+steps.addEventListener("scroll", markStepsEnd, { passive: true });
+addEventListener("resize", markStepsEnd);
+markStepsEnd();

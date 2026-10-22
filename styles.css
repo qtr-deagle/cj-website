@@ -506,6 +506,12 @@ body:has(.dialog[open]) { overflow: hidden; }
   .tiles { grid-template-columns: repeat(2, 1fr); margin-top: 56px; }
   .work-grid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(2, 1fr); }
+  /* Pricing, one column: put the payment plan right under the package switch (before the checklist),
+     so tapping "Low upfront" visibly changes the plan. "contents" lets the left column's children join this list. */
+  .pricing-grid { display: flex; flex-direction: column; gap: 0; }
+  .pricing-grid > div:first-child { display: contents; }
+  .pricing-grid .plan { order: 1; margin-bottom: 32px; scroll-margin-bottom: 16px; }
+  .pricing-grid .checks { order: 2; }
   .contact-grid > .contact { flex-basis: calc(50% - 6px); }
 }
 @media (max-width: 600px) {
@@ -548,8 +554,12 @@ body:has(.dialog[open]) { overflow: hidden; }
   /* Steps: swipe sideways instead of a long stack */
   .steps {
     display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
-    margin-inline: -16px; padding-inline: 16px; scroll-padding-inline: 16px;
+    margin-inline: -16px; padding: 4px 16px 20px; margin-bottom: -16px; scroll-padding-inline: 16px;
+    /* Fade the right edge so the next card reads as "swipe for more", not cut off */
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent);
   }
+  .steps.at-end { -webkit-mask-image: none; mask-image: none; }   /* last card fully visible */
   .steps::-webkit-scrollbar { display: none; }
   .step { flex: 0 0 78%; scroll-snap-align: start; padding: 20px; }
   .step-top { margin-bottom: 16px; }
@@ -558,7 +568,7 @@ body:has(.dialog[open]) { overflow: hidden; }
   .pkg-stats div { padding: 12px; }
   .pkg-stats strong { font-size: 18px; }
 
-  .pricing-grid, .about-grid { gap: 32px; }
+  .about-grid { gap: 32px; }
   .ms { gap: 14px; padding: 16px 18px; }
   .ms .ms-pct { font-size: 24px; width: 60px; }
 
