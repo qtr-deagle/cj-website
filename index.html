@@ -203,9 +203,16 @@
 
           <!-- Packages: the pill switch swaps the numbers (values are in script.js) -->
           <div class="pkg reveal">
-            <div class="segmented" role="tablist" aria-label="Choose a package">
-              <button class="seg active" data-pkg="a">One-time build</button>
-              <button class="seg" data-pkg="b">Low upfront</button>
+            <div class="pkg-switches">
+              <div class="segmented" role="tablist" aria-label="Choose a package">
+                <button class="seg active" data-pkg="a">One-time<span class="hide-sm"> build</span></button>
+                <button class="seg" data-pkg="b">Low upfront</button>
+              </div>
+              <!-- Currency: ₱ or $ (picked automatically, see script.js) -->
+              <div class="segmented seg-cur" aria-label="Currency">
+                <button class="seg active" data-cur="php" aria-label="Philippine pesos">₱</button>
+                <button class="seg" data-cur="usd" aria-label="US dollars">$</button>
+              </div>
             </div>
             <div class="pkg-stats">
               <div><span class="mono dim">Setup</span><strong data-pkg-setup>₱40,000</strong></div>

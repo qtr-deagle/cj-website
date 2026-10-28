@@ -272,7 +272,8 @@ h3 { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
 }
 /* Packages: pill switch + three stat tiles */
 .pkg { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
-.pkg .segmented { align-self: flex-start; }
+.pkg-switches { display: flex; gap: 8px; align-self: flex-start; }
+.seg-cur .seg { width: 40px; padding: 0; }   /* just a ₱ or $, so keep it narrow */
 .pkg-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .pkg-stats div {
   display: flex; flex-direction: column; gap: 2px; min-width: 0;
@@ -563,8 +564,11 @@ body:has(.dialog[open]) { overflow: hidden; }
   .steps::-webkit-scrollbar { display: none; }
   .step { flex: 0 0 78%; scroll-snap-align: start; padding: 20px; }
   .step-top { margin-bottom: 16px; }
-  .pkg .segmented { align-self: stretch; display: flex; }
-  .pkg .seg { flex: 1; padding: 0 8px; }
+  .pkg-switches { align-self: stretch; }
+  .hide-sm { display: none; }   /* "One-time build" → "One-time", so the ₱/$ switch fits beside it */
+  .pkg .segmented:not(.seg-cur) { flex: 1; display: flex; }
+  .pkg .seg:not(.seg-cur .seg) { flex: 1 1 auto; padding: 0 8px; }   /* each pill as wide as its words */
+  .seg-cur .seg { width: 34px; }
   .pkg-stats div { padding: 12px; }
   .pkg-stats strong { font-size: 18px; }
 

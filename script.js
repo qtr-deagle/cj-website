@@ -167,22 +167,46 @@ if (matchMedia("(hover: hover) and (pointer: fine)").matches &&
 }
 
 /* ---------- Pricing packages (pill switch) — edit the numbers here ---------- */
+// Prices are plain numbers in each currency: { php: pesos, usd: dollars }
 const PACKAGES = {
-  a: { setup: "₱40,000", monthly: "₱2,500", term: "None",   split: "Setup paid in 3 steps: 30 / 40 / 30.", plan: [30, 40, 30], launch: "When your site goes live" },   // One-time build
-  b: { setup: "₱12,000", monthly: "₱4,500", term: "1 year", split: "Setup: half to start, half at launch.", plan: [50, 0, 50], launch: "Once you approve the preview" },   // Low upfront
+  a: { setup: { php: 40000, usd: 700 }, monthly: { php: 2500, usd: 45 }, term: "None",   split: "Setup paid in 3 steps: 30 / 40 / 30.", plan: [30, 40, 30], launch: "When your site goes live" },   // One-time build
+  b: { setup: { php: 12000, usd: 210 }, monthly: { php: 4500, usd: 80 }, term: "1 year", split: "Setup: half to start, half at launch.", plan: [50, 0, 50], launch: "Once you approve the preview" },   // Low upfront
 };
-const pkgSegs = document.querySelectorAll(".pkg .seg");
+const SYMBOL = { php: "₱", usd: "$" };
+const money = (amounts) => SYMBOL[cur] + amounts[cur].toLocaleString("en-US");   // e.g. ₱40,000 or $700
+
+// Which currency to show first: ?usd or ?php in the link wins; otherwise visitors outside the Philippines get dollars
+const params = new URLSearchParams(location.search);
+const inPH = Intl.DateTimeFormat().resolvedOptions().timeZone === "Asia/Manila";
+let cur = params.has("usd") ? "usd" : params.has("php") ? "php" : inPH ? "php" : "usd";
+let pkg = "a";
+
+// Swap in text, then replay the little fade-up animation
+function swapText(el, text) {
+  el.textContent = text;
+  el.classList.remove("swap");
+  void el.offsetWidth;
+  el.classList.add("swap");
+}
+const setPrices = () => {
+  swapText(document.querySelector("[data-pkg-setup]"), money(PACKAGES[pkg].setup));
+  swapText(document.querySelector("[data-pkg-monthly]"), money(PACKAGES[pkg].monthly));
+};
+
+// Currency switch (₱ / $)
+const curSegs = document.querySelectorAll("[data-cur]");
+curSegs.forEach((b) => b.classList.toggle("active", b.dataset.cur === cur));
+if (cur !== "php") setPrices();   // the HTML starts in pesos, so switch it on load if needed
+pills("[data-cur]", (btn) => { cur = btn.dataset.cur; setPrices(); });
+
+const pkgSegs = document.querySelectorAll("[data-pkg]");
 pkgSegs.forEach((btn) => btn.addEventListener("click", () => {
   if (btn.classList.contains("active")) return;   // already selected: don't replay the animation
   pkgSegs.forEach((b) => b.classList.toggle("active", b === btn));
-  const p = PACKAGES[btn.dataset.pkg];
-  for (const key of ["setup", "monthly", "term", "split", "launch"]) {
-    const el = document.querySelector(`[data-pkg-${key}]`);
-    el.textContent = p[key];
-    el.classList.remove("swap");
-    void el.offsetWidth;            // restart the little fade-up animation
-    el.classList.add("swap");
-  }
+  pkg = btn.dataset.pkg;
+  const p = PACKAGES[pkg];
+  setPrices();
+  for (const key of ["term", "split", "launch"]) swapText(document.querySelector(`[data-pkg-${key}]`), p[key]);
   // Payment plan on the right: update the bar and boxes (a step at 0% is hidden)
   p.plan.forEach((pct, i) => {
     const step = String(i + 1);
