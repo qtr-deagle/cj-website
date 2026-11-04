@@ -168,9 +168,10 @@ if (matchMedia("(hover: hover) and (pointer: fine)").matches &&
 
 /* ---------- Pricing packages (pill switch) — edit the numbers here ---------- */
 // Prices are plain numbers in each currency: { php: pesos, usd: dollars }
+// USD is set for clients abroad (US/AU/EU rates), not a straight peso conversion.
 const PACKAGES = {
-  a: { setup: { php: 40000, usd: 700 }, monthly: { php: 2500, usd: 45 }, term: "None",   split: "Setup paid in 3 steps: 30 / 40 / 30.", plan: [30, 40, 30], launch: "When your site goes live" },   // One-time build
-  b: { setup: { php: 12000, usd: 210 }, monthly: { php: 4500, usd: 80 }, term: "1 year", split: "Setup: half to start, half at launch.", plan: [50, 0, 50], launch: "Once you approve the preview" },   // Low upfront
+  a: { setup: { php: 40000, usd: 1500 }, monthly: { php: 2500, usd: 60 },  term: "None",   split: "Setup paid in 3 steps: 30 / 40 / 30.", plan: [30, 40, 30], launch: "When your site goes live" },   // One-time build
+  b: { setup: { php: 12000, usd: 500 },  monthly: { php: 4500, usd: 110 }, term: "1 year", split: "Setup: half to start, half at launch.", plan: [50, 0, 50], launch: "Once you approve the preview" },   // Low upfront
 };
 const SYMBOL = { php: "₱", usd: "$" };
 const money = (amounts) => SYMBOL[cur] + amounts[cur].toLocaleString("en-US");   // e.g. ₱40,000 or $700
