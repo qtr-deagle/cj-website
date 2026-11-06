@@ -1,0 +1,168 @@
+/* =========================================================
+   Isla Verde Resort demo. Builds on ../styles.css
+   (colors, buttons, pills, dialog), adding only this page's parts.
+   ========================================================= */
+body.resort { position: relative; isolation: isolate; background-color: var(--paper); color: var(--on-paper); min-height: 100vh; padding-bottom: 48px; }
+.resort .dim { color: var(--on-paper-dim); }
+.resort h1 { font-size: clamp(36px, 5.4vw, 60px); margin: 12px 0 14px; }
+.resort h2 { font-size: 20px; margin: 0; letter-spacing: -.02em; }
+.resort .eyebrow { color: var(--on-paper-dim); }
+
+/* Demo notice strip */
+.demo-bar {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 8px 16px; background: var(--ink); color: var(--on-ink-dim); font-size: 12px;
+}
+.demo-bar span, .demo-bar a { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.demo-bar a { color: var(--on-ink); flex: none; }
+.demo-bar a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Header: logo + Guest/Owner pill switch */
+.r-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; }
+.r-logo { display: inline-flex; align-items: center; gap: 10px; font: 700 18px "Inter Tight", sans-serif; letter-spacing: -.02em; white-space: nowrap; }
+.r-mark {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px;
+  background: #2f6f8f; color: #f3efe6; font-size: 13px; letter-spacing: 0;
+}
+.view:not([hidden]) { animation: riseIn .35s var(--ease) both; }
+
+/* ---------- Guest view ---------- */
+.r-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: 32px; padding: 24px 0 40px; }
+.r-lead { font-size: 16.5px; color: var(--on-paper-dim); max-width: 32em; }
+.r-perks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+.r-perks span {
+  font-size: 12px; padding: 4px 12px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid var(--paper-line); background: var(--paper-2); color: var(--on-paper-dim);
+}
+.r-stage {
+  position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 30%, #f2f7f8 0%, #dbe9ec 60%, #c9dde1 100%);
+  border: 1px solid var(--paper-line);
+}
+.r-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .8s var(--ease); }
+.r-stage.ready canvas { opacity: 1; }
+
+.r-book { padding: 0; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.r-sub { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.r-sub span { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Room cards: tap one to select it */
+.rooms { display: grid; gap: 12px; }
+.room {
+  display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  padding: 10px 18px 10px 10px; border-radius: var(--radius); text-align: left;
+  background: var(--paper-2); border: 1px solid var(--paper-line);
+  transition: border-color .2s, box-shadow .2s, transform .2s var(--ease);
+}
+.room:hover { transform: translateY(-1px); }
+.room.active { border-color: var(--on-paper); box-shadow: 0 0 0 1px var(--on-paper); }
+.room-pic { height: 84px; border-radius: 12px; }
+.room-info { display: grid; gap: 2px; min-width: 0; }
+.room-info strong { font-size: 16px; }
+.room-info span { font-size: 13px; color: var(--on-paper-dim); }
+.room-info strong, .room-info span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.room-price { text-align: right; white-space: nowrap; }
+.room-price strong { display: block; font: 700 18px "Inter Tight", sans-serif; }
+.room-price span { font-size: 12px; color: var(--on-paper-dim); }
+
+/* Booking card */
+.bk {
+  display: grid; gap: 14px; padding: 20px; border-radius: var(--radius);
+  background: var(--paper-2); border: 1px solid var(--paper-line);
+  position: sticky; top: 16px;
+}
+.bk-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bk label { display: grid; gap: 6px; font-size: 12px; font-weight: 600; min-width: 0; }
+.bk input[type="date"] {
+  width: 100%; min-width: 0; height: 44px; padding: 0 10px; border-radius: 12px;
+  border: 1px solid var(--paper-line); background: var(--paper); color: var(--on-paper);
+  font: 500 14px "JetBrains Mono", monospace;
+}
+.bk input[type="date"]:focus { outline: none; border-color: var(--on-paper); box-shadow: 0 0 0 3px rgba(0,0,0,.07); }
+.bk-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 600; }
+.stepper { display: inline-flex; align-items: center; gap: 4px; padding: 3px; border-radius: 999px; border: 1px solid var(--paper-line); }
+.stepper button { width: 32px; height: 32px; border-radius: 50%; font-size: 18px; line-height: 1; }
+.stepper button:hover:not(:disabled) { background: rgba(0,0,0,.06); }
+.stepper button:disabled { opacity: .3; cursor: default; }
+.stepper output { min-width: 24px; text-align: center; font-weight: 600; }
+.bk-lines { display: grid; gap: 6px; padding-top: 12px; border-top: 1px dashed var(--paper-line); font-size: 14px; }
+.bk-lines div { display: flex; justify-content: space-between; gap: 12px; color: var(--on-paper-dim); }
+.bk-lines dt, .bk-lines dd { white-space: nowrap; }
+.bk-total { padding-top: 6px; color: var(--on-paper) !important; font-weight: 700; font-size: 16px; }
+.bk-msg { min-height: 0; font-size: 13px; color: #b0412a; }
+.bk-msg:empty { display: none; }
+.bk-fine { text-align: center; font-size: 12px; margin-top: -6px; }
+
+/* ---------- Owner dashboard (fits one screen; the list scrolls inside) ---------- */
+.o-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-top: 8px; }
+.o-tile {
+  display: grid; gap: 4px; padding: 16px 18px; border-radius: 14px;
+  background: var(--paper-2); border: 1px solid var(--paper-line); min-width: 0;
+}
+.o-tile span { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.o-tile strong { font: 700 26px "Inter Tight", sans-serif; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.o-tile .dim span { font-size: inherit; }
+.o-bar { display: flex; gap: 10px; margin: 16px 0 12px; }
+.o-search {
+  flex: 1; min-width: 0; height: 40px; padding: 0 16px; border-radius: 999px;
+  border: 1px solid var(--paper-line); background: var(--paper-2); color: var(--on-paper);
+  font: 400 14px "JetBrains Mono", monospace;
+}
+.o-search:focus { outline: none; border-color: var(--on-paper); }
+.o-bar .btn-outline { background: var(--paper-2); border-color: #c9c5ba; }
+.o-list { display: grid; gap: 8px; max-height: calc(100vh - 330px); min-height: 240px; overflow-y: auto; scrollbar-width: thin; padding: 2px; }
+.o-add {
+  min-height: 56px; border-radius: 14px; border: 1.5px dashed #bdb9ad; background: rgba(247,246,242,.5);
+  color: var(--on-paper-dim); font-weight: 600; font-size: 14px;
+  transition: border-color .2s, color .2s;
+}
+.o-add:hover { border-color: var(--on-paper-dim); color: var(--on-paper); }
+.o-row {
+  display: grid; grid-template-columns: 96px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.1fr) 88px 96px;   /* fixed last 2 so columns line up */
+  align-items: center; gap: 14px; padding: 12px 16px; border-radius: 14px;
+  background: var(--paper-2); border: 1px solid var(--paper-line); font-size: 13.5px;
+  animation: riseIn .3s var(--ease) both;
+}
+.o-row > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.o-code { font: 600 12px "JetBrains Mono", monospace; }
+.o-guest { font-weight: 600; }
+.o-row .dim { color: var(--on-paper-dim); }
+.o-total { font-weight: 700; text-align: right; }
+.o-pill { justify-self: start; font-size: 11px; padding: 3px 10px; border-radius: 999px; background: rgba(47,111,143,.12); color: #2f6f8f; }
+.o-pill.past { background: rgba(0,0,0,.06); color: var(--on-paper-dim); }
+.o-empty { padding: 20px; text-align: center; color: var(--on-paper-dim); font-size: 14px; }
+.o-note { font-size: 12px; margin-top: 10px; }
+
+/* ---------- Tablet & phone ---------- */
+@media (max-width: 960px) {
+  .r-hero, .r-book { grid-template-columns: 1fr; }
+  .r-hero { gap: 24px; }
+  .bk { position: static; }
+  .o-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .o-row { grid-template-columns: 84px minmax(0, 1fr) auto; row-gap: 2px; }
+  .o-row .o-room, .o-row .o-dates { grid-column: 2; }
+  .o-row .o-total { grid-column: 3; grid-row: 1; }
+  .o-row .o-pill { grid-column: 3; grid-row: 2; justify-self: end; }
+  .o-list { max-height: none; }
+}
+@media (max-width: 600px) {
+  .r-head { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 0; }
+  .r-head .segmented { display: flex; }
+  .r-head .seg { flex: 1; padding: 0 8px; }
+  .r-hero { padding: 8px 0 28px; }
+  .room { grid-template-columns: 72px minmax(0, 1fr) auto; gap: 12px; padding: 8px 14px 8px 8px; }
+  .room-pic { height: 64px; }
+  .room-info span { font-size: 12px; }
+  .bk { padding: 16px; }
+  .o-tile { padding: 12px 14px; }
+  .o-tile strong { font-size: 22px; }
+  .o-row { grid-template-columns: 1fr auto; padding: 12px 14px; }
+  .o-row .o-code { grid-column: 1; grid-row: 1; }
+  .o-row .o-guest { grid-column: 1; grid-row: 2; }
+  .o-row .o-room, .o-row .o-dates { grid-column: 1; }
+  .o-row .o-total { grid-column: 2; grid-row: 1; }
+  .o-row .o-pill { grid-column: 2; grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .view:not([hidden]), .o-row { animation: none; }
+}

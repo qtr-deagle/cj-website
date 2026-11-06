@@ -3,6 +3,7 @@
    - Leave a value as "" to hide that contact card.
    ========================================================= */
 const CONTACT = {
+  messenger: "https://m.me/TheSuspecttttt",                                          // m.me/ + your Facebook username or Page name
   email: "cjalamares05@gmail.com",
   facebook: "https://www.facebook.com/TheSuspecttttt",                                 // e.g. "https://facebook.com/your.page"
   phone: "+63 992 057 4116",
@@ -13,6 +14,7 @@ const CONTACT = {
 
 /* ---------- Fill contact cards ---------- */
 const display = {
+  messenger: () => "Chat with me",
   email: (v) => v,
   facebook: (v) => v.replace(/^https?:\/\/(www\.)?/, ""),
   phone: (v) => v,
@@ -21,6 +23,7 @@ const display = {
   instagram: (v) => "@" + v.replace(/\/$/, "").split("/").pop(),
 };
 const href = {
+  messenger: (v) => v,
   email: (v) => `mailto:${v}`,
   facebook: (v) => v,
   phone: (v) => `tel:${v.replace(/\s/g, "")}`,
@@ -80,13 +83,8 @@ pills("#need .seg", (btn) => { need = btn.dataset.v; });
 dialog.querySelector("[data-verify]").hidden = !CONTACT.email;
 dialog.querySelector("[data-verify-email]").textContent = CONTACT.email;
 
-form.addEventListener("submit", (e) => {
-  if (e.submitter?.value !== "send") return;
-  if (!CONTACT.email) {
-    e.preventDefault();
-    alert("Email isn't set yet. Add it to CONTACT in script.js.");
-    return;
-  }
+// The form's answers as a short message (used by both email and Messenger)
+function projectMessage() {
   const d = new FormData(form);
   const subject = `New project: ${need}${d.get("business") ? " for " + d.get("business") : ""}`;
   const body = [
@@ -96,16 +94,56 @@ form.addEventListener("submit", (e) => {
     "",
     d.get("details") || "",
   ].join("\n");
+  return { subject, body };
+}
+
+form.addEventListener("submit", (e) => {
+  if (e.submitter?.value !== "send") return;
+  if (!CONTACT.email) {
+    e.preventDefault();
+    alert("Email isn't set yet. Add it to CONTACT in script.js.");
+    return;
+  }
+  const { subject, body } = projectMessage();
   window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
 
-/* ---------- Phone menu ---------- */
-const menuBtn = document.querySelector(".menu-btn");
-const menu = document.querySelector(".mobile-menu");
-const setMenu = (open) => { menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open); };
-menuBtn.addEventListener("click", () => setMenu(menu.hidden));
-menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
-document.querySelectorAll("[data-open-start]").forEach((b) => b.addEventListener("click", () => setMenu(false)));
+// Messenger can't be pre-filled like email, so copy the message first, then open the chat to paste it
+const msgBtn = dialog.querySelector("[data-messenger]");
+const msgHint = dialog.querySelector("[data-messenger-hint]");
+msgBtn.hidden = !CONTACT.messenger;
+msgBtn.addEventListener("click", async () => {
+  const { subject, body } = projectMessage();
+  try {
+    await navigator.clipboard.writeText(`${subject}\n\n${body}`);
+    msgHint.textContent = "Message copied. Paste it in the chat.";
+  } catch {
+    msgHint.textContent = "Opening Messenger…";   // clipboard blocked: just open the chat
+  }
+  window.open(CONTACT.messenger, "_blank", "noopener");
+});
+
+/* ---------- Bottom nav (phones & tablets): light up the section you're in ----------
+   Watches a thin line across the middle of the screen. Whichever section crosses it is "current".
+   Sections without a dock link (the hero, About) light up nothing. */
+const dockLinks = [...document.querySelectorAll(".dock-links a")];
+const dockGlow = document.querySelector(".dock-glow");
+let dockCurrent = "";
+const paintDock = () => {
+  const a = dockLinks.find((l) => l.hash === "#" + dockCurrent);
+  dockLinks.forEach((l) => l.classList.toggle("active", l === a));
+  dockGlow.classList.toggle("on", !!a);
+  if (a) {   // slide the highlight pill under the current link
+    dockGlow.style.width = a.offsetWidth + "px";
+    dockGlow.style.transform = `translateX(${a.offsetLeft}px)`;
+  }
+};
+const sectionWatcher = new IntersectionObserver((entries) => {
+  for (const e of entries) if (e.isIntersecting) dockCurrent = e.target.id;
+  paintDock();
+}, { rootMargin: "-50% 0px -50% 0px" });
+document.querySelectorAll("main > section").forEach((s) => sectionWatcher.observe(s));
+addEventListener("resize", paintDock);
 
 /* ---------- Payment plan hover: bar segment <-> matching box ---------- */
 const plan = document.querySelector(".plan");
@@ -118,6 +156,25 @@ plan.querySelectorAll("[data-step]").forEach((el) => {
 });
 // Only clear when leaving the whole plan, so crossing the gaps between boxes doesn't flicker
 plan.addEventListener("pointerleave", () => highlight(null));
+
+/* ---------- Top nav: "Menu" dropdown + darker bar once you scroll ---------- */
+const navEl = document.querySelector(".nav");
+const menuToggle = document.querySelector(".menu-toggle");
+const siteMenu = document.getElementById("site-menu");
+const setMenu = (open) => { siteMenu.hidden = !open; menuToggle.setAttribute("aria-expanded", open); };
+menuToggle.addEventListener("click", () => setMenu(siteMenu.hidden));
+siteMenu.querySelectorAll("a, button").forEach((el) => el.addEventListener("click", () => setMenu(false)));
+document.addEventListener("click", (e) => { if (!siteMenu.hidden && !e.target.closest(".site-menu, .menu-toggle")) setMenu(false); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+const markScrolled = () => navEl.classList.toggle("scrolled", scrollY > 8);
+addEventListener("scroll", markScrolled, { passive: true });
+markScrolled();
+
+/* ---------- FAQ: the whole card opens and closes, not just the question ---------- */
+document.querySelectorAll(".faq").forEach((faq) => faq.addEventListener("click", (e) => {
+  if (e.target.closest("summary")) return;   // clicking the question already toggles it by itself
+  faq.open = !faq.open;
+}));
 
 /* ---------- Custom cursor (only with a real mouse, and not for "reduce motion" users) ---------- */
 if (matchMedia("(hover: hover) and (pointer: fine)").matches &&
@@ -146,7 +203,7 @@ if (matchMedia("(hover: hover) and (pointer: fine)").matches &&
   })();
 
   // Grow over anything clickable
-  const clickable = "a, button, .seg, label";   // only things you can actually click
+  const clickable = "a, button, .seg, label, .faq";   // only things you can actually click
   const updateRing = (target) => {
     // Over a text box, hide the custom cursor so the normal typing cursor (|) shows instead
     const typing = !!target.closest("input, textarea, select");

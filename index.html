@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Christian Joshua Alamares — Software Engineer</title>
   <meta name="description" content="Christian Joshua Alamares is a software engineer who builds web apps, mobile apps, and business systems for any kind of business: resorts, cafés, clothing brands, shops, and more. Real person, real work, milestone payments, and your data stays yours." />
   <!-- Link preview card (Messenger, Facebook, Viber, etc.) -->
@@ -16,8 +16,57 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://cjalamares.cjdev.workers.dev/" />
   <link rel="stylesheet" href="styles.css" />
   <script>document.documentElement.classList.add('js')</script>
+
+  <!-- Info for Google (shown in search results). Keep it in sync with your contact details in script.js. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://cjalamares.cjdev.workers.dev/#me",
+        "name": "Christian Joshua Alamares",
+        "jobTitle": "Software Engineer",
+        "url": "https://cjalamares.cjdev.workers.dev/",
+        "image": "https://cjalamares.cjdev.workers.dev/images/profile.jpg",
+        "sameAs": [
+          "https://github.com/qtr-deagle",
+          "https://www.linkedin.com/in/christian-joshua-alamares-440485353",
+          "https://www.facebook.com/TheSuspecttttt",
+          "https://www.instagram.com/thesuspect00"
+        ]
+      },
+      {
+        "@type": "ProfessionalService",
+        "name": "Christian Joshua Alamares — Websites & Systems",
+        "url": "https://cjalamares.cjdev.workers.dev/",
+        "description": "Websites, booking systems, and web apps for small businesses: resorts, cafés, clothing brands, shops, and more.",
+        "founder": { "@id": "https://cjalamares.cjdev.workers.dev/#me" },
+        "areaServed": "Philippines",
+        "email": "cjalamares05@gmail.com"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Visitor stats: Cloudflare Web Analytics (free, no cookies).
+       1. Cloudflare dashboard → Analytics & Logs → Web Analytics → "Add a site" → enter this site's address
+       2. Copy the token from the snippet it shows you (the long code after "token":)
+       3. Paste it below in place of YOUR_TOKEN. Until then, nothing loads. -->
+  <script>
+    (() => {
+      const CF_TOKEN = "YOUR_TOKEN";
+      if (CF_TOKEN === "YOUR_TOKEN" || location.protocol === "file:") return;
+      const s = document.createElement("script");
+      s.defer = true;
+      s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+      s.dataset.cfBeacon = JSON.stringify({ token: CF_TOKEN });
+      document.head.append(s);
+    })();
+  </script>
 </head>
 <body>
 
@@ -28,60 +77,81 @@
         <span class="logo-mark">CJ</span>
         <span class="logo-text">Christian Joshua Alamares</span>
       </a>
-      <nav class="nav-links">
-        <a href="#work">Work</a>
-        <a href="#process">Process</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
+      <!-- Center: availability status (green dot = taking projects) -->
+      <span class="nav-status"><span class="live-dot"></span>Available for projects</span>
       <div class="nav-right">
-        <button class="btn btn-light btn-sm" data-open-start>Start a project</button>
-        <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="site-menu">
+          <span class="menu-label">Menu</span><span class="menu-ic" aria-hidden="true"><i></i><i></i></span>
+        </button>
       </div>
     </div>
-    <!-- Phone menu: shown by the ≡ button on small screens -->
-    <nav class="mobile-menu" hidden>
+    <!-- Dropdown opened by "Menu" (desktop). Phones use the bottom dock instead. -->
+    <nav class="site-menu" id="site-menu" aria-label="Main" hidden>
+      <a href="#work"><span class="mono">01</span>Work</a>
+      <a href="#process"><span class="mono">02</span>Process</a>
+      <a href="#pricing"><span class="mono">03</span>Pricing</a>
+      <a href="#about"><span class="mono">04</span>About</a>
+      <a href="#contact"><span class="mono">05</span>Contact</a>
+      <button class="btn btn-accent full" data-open-start>Start a project</button>
+    </nav>
+  </header>
+
+  <!-- Phone & tablet nav: floating pill at the bottom (in thumb reach). Hidden on desktop. -->
+  <nav class="dock" aria-label="Sections">
+    <div class="dock-links">
+      <span class="dock-glow" aria-hidden="true"></span>
       <a href="#work">Work</a>
       <a href="#process">Process</a>
       <a href="#pricing">Pricing</a>
-      <a href="#about">About</a>
       <a href="#contact">Contact</a>
-    </nav>
-  </header>
+    </div>
+    <button class="dock-start" data-open-start>Start</button>
+  </nav>
 
   <main id="top">
 
     <!-- ============ HERO (dark) ============ -->
     <section class="tex-dark hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <span class="pill reveal"><span class="dot"></span>Taking new projects</span>
-          <h1 class="reveal">Websites &amp; systems for any business.</h1>
-          <p class="lead reveal">
-            I'm Christian Joshua Alamares, a software engineer who builds real, working software for small businesses.
-            No middlemen, no hidden fees, and your domain and data always stay yours.
-          </p>
-          <!-- Example industries: edit freely -->
-          <div class="industries reveal">
-            <span>Resorts</span><span>Cafés</span><span>Clothing</span><span>Retail</span><span>&amp; more</span>
-          </div>
-          <div class="hero-cta reveal">
-            <a class="btn btn-light" href="#work">See my work</a>
-            <a class="btn btn-ghost" href="#about">About me</a>
+      <div class="hero-main">
+        <div class="hero-dots" aria-hidden="true"></div>
+        <div class="wrap hero-inner">
+          <!-- Giant headline. The cut-out photo below stands in front of its first line (see .hero-portrait) -->
+          <h1 class="hero-type reveal">
+            <span class="h-line">Websites</span>
+            <span class="h-line h-accent">that work.</span>
+          </h1>
+
+          <!-- PHOTO: images/profile-cutout.webp = your photo with the background removed -->
+          <figure class="hero-portrait reveal">
+            <span class="hero-glow" aria-hidden="true"></span>
+            <img src="images/profile-cutout.webp" alt="Christian Joshua Alamares" width="1080" height="968" />
+            <figcaption class="hero-chip">
+              <strong>Christian Joshua Alamares</strong>
+              <span class="mono">Software Engineer · PH</span>
+            </figcaption>
+          </figure>
+
+          <div class="hero-copy">
+            <p class="lead reveal">
+              <strong>Websites &amp; systems for any business.</strong> I'm Christian, a software engineer who builds real,
+              working software for small businesses. No middlemen, no hidden fees, and your domain and data stay yours.
+            </p>
+            <!-- Example industries: edit freely -->
+            <div class="industries reveal">
+              <span>Resorts</span><span>Cafés</span><span>Clothing</span><span>Retail</span><span>&amp; more</span>
+            </div>
+            <div class="hero-cta reveal">
+              <button class="btn btn-accent" data-open-start>Start a project</button>
+              <a class="btn btn-ghost" href="#work">See my work</a>
+            </div>
+            <!-- Real numbers only: each one is promised elsewhere on the page -->
+            <dl class="hero-stats reveal">
+              <div><dt>20+</dt><dd>Projects built</dd></div>
+              <div><dt>5 wks</dt><dd>To launch</dd></div>
+              <div><dt>24h</dt><dd>Reply time</dd></div>
+            </dl>
           </div>
         </div>
-
-        <!-- PHOTO: put your photo at images/profile.jpg -->
-        <figure class="hero-photo reveal">
-          <div class="ph ph-tall" data-label="images/profile.jpg">
-            <img src="images/profile.jpg" alt="Christian Joshua Alamares" onerror="this.remove()" />
-          </div>
-          <figcaption>
-            <span class="mono">Christian Joshua Alamares</span>
-            <span class="mono dim">Software Engineer</span>
-          </figcaption>
-        </figure>
       </div>
 
       <!-- Trust tiles -->
@@ -122,6 +192,24 @@
         <div class="work-grid">
           <!-- PROJECT IMAGES: put screenshots in images/ with the names shown on each card -->
 
+          <!-- Full-width: the resort booking demo (lives in demo/resort.html) -->
+          <article class="card card-feature card-wide reveal" data-cat="web">
+            <div class="ph ph-wide" data-label="images/work-resort.jpg">
+              <img src="images/work-resort.jpg" alt="Isla Verde Resort booking demo" onerror="this.remove()" />
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Isla Verde Resort</h3>
+                <span class="badge">Booking demo</span>
+              </div>
+              <p>A booking website for a beach resort: rooms, dates, live prices, and an owner dashboard with bookings and stats. Try booking a stay.</p>
+              <div class="tags"><span>HTML</span><span>JavaScript</span><span>Three.js</span></div>
+              <div class="card-links">
+                <a class="btn btn-dark btn-sm" href="demo/resort.html">Open demo</a>
+              </div>
+            </div>
+          </article>
+
           <article class="card card-feature reveal" data-cat="web">
             <div class="ph ph-wide" data-label="images/work-slick.jpg">
               <img src="images/work-slick.jpg" alt="Slick Pimps Club online store" onerror="this.remove()" />
@@ -134,7 +222,7 @@
               <p>Online store for a streetwear brand: product pages, a shopping bag, and an email list for new drops.</p>
               <div class="tags"><span>React</span><span>Vite</span><span>E-commerce</span></div>
               <div class="card-links">
-                <a class="btn btn-dark btn-sm" href="https://slick-pimps-club.vercel.app" target="_blank" rel="noopener">Demo site</a>
+                <a class="btn btn-dark btn-sm" href="https://slick-pimps-club.vercel.app" target="_blank" rel="noopener">Visit Demo</a>
               </div>
             </div>
           </article>
@@ -154,6 +242,65 @@
           </article>
         </div>
 
+        <!-- LIVE 3D PRODUCT CARDS: one 3D canvas draws all four products (see shop3d.js) -->
+        <div class="shop">
+          <div class="shop-head reveal">
+            <strong>Live 3D product cards</strong>
+            <span class="mono dim">Drag to spin · tap a color</span>
+          </div>
+          <div class="shop-grid">
+            <canvas class="shop-canvas" aria-hidden="true"></canvas>
+            <article class="shop-card reveal" data-product="shirt">
+              <div class="shop-media" role="img" aria-label="3D t-shirt you can drag to spin"></div>
+              <div class="shop-body">
+                <div class="shop-top"><strong>Classic Tee</strong><span>Clothing</span></div>
+                <div class="cdots" aria-label="Color">
+                <button class="cdot" style="--c:#c8643b" data-color="#c8643b" aria-label="Terracotta"></button>
+                <button class="cdot" style="--c:#2b2a26" data-color="#2b2a26" aria-label="Ink"></button>
+                <button class="cdot" style="--c:#e9e4d8" data-color="#e9e4d8" aria-label="Bone"></button>
+                <button class="cdot" style="--c:#2f6f8f" data-color="#2f6f8f" aria-label="Ocean"></button>
+                </div>
+              </div>
+            </article>
+            <article class="shop-card reveal" data-product="cup">
+              <div class="shop-media" role="img" aria-label="3D coffee mug you can drag to spin"></div>
+              <div class="shop-body">
+                <div class="shop-top"><strong>House Mug</strong><span>Café</span></div>
+                <div class="cdots" aria-label="Color">
+                <button class="cdot" style="--c:#e9e4d8" data-color="#e9e4d8" aria-label="Bone"></button>
+                <button class="cdot" style="--c:#2b2a26" data-color="#2b2a26" aria-label="Ink"></button>
+                <button class="cdot" style="--c:#8a9a7b" data-color="#8a9a7b" aria-label="Sage"></button>
+                <button class="cdot" style="--c:#d9a53b" data-color="#d9a53b" aria-label="Mustard"></button>
+                </div>
+              </div>
+            </article>
+            <article class="shop-card reveal" data-product="cottage">
+              <div class="shop-media" role="img" aria-label="3D beach villa you can drag to spin"></div>
+              <div class="shop-body">
+                <div class="shop-top"><strong>Beach Villa</strong><span>Resort</span></div>
+                <div class="cdots" aria-label="Color">
+                <button class="cdot" style="--c:#8a9a7b" data-color="#8a9a7b" aria-label="Sage"></button>
+                <button class="cdot" style="--c:#c8643b" data-color="#c8643b" aria-label="Terracotta"></button>
+                <button class="cdot" style="--c:#2f6f8f" data-color="#2f6f8f" aria-label="Ocean"></button>
+                <button class="cdot" style="--c:#2b2a26" data-color="#2b2a26" aria-label="Ink"></button>
+                </div>
+              </div>
+            </article>
+            <article class="shop-card reveal" data-product="board">
+              <div class="shop-media" role="img" aria-label="3D skateboard you can drag to spin"></div>
+              <div class="shop-body">
+                <div class="shop-top"><strong>Street Deck</strong><span>Shop</span></div>
+                <div class="cdots" aria-label="Color">
+                <button class="cdot" style="--c:#2f6f8f" data-color="#2f6f8f" aria-label="Ocean"></button>
+                <button class="cdot" style="--c:#d9a53b" data-color="#d9a53b" aria-label="Mustard"></button>
+                <button class="cdot" style="--c:#c8643b" data-color="#c8643b" aria-label="Terracotta"></button>
+                <button class="cdot" style="--c:#2b2a26" data-color="#2b2a26" aria-label="Ink"></button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
         <a class="more reveal" href="https://github.com/qtr-deagle" target="_blank" rel="noopener">
           <span>See all 20 projects on GitHub</span><span class="mono dim">github.com/qtr-deagle</span>
         </a>
@@ -161,8 +308,14 @@
     </section>
 
     <!-- ============ PROCESS (dark) ============ -->
+    <!-- With 3D on, scroll3d.js adds .process-3d: the section gets tall, the stage below stays pinned
+         on screen, and scrolling builds the cottage one step at a time. Without it, this is a normal step grid. -->
     <section class="tex-dark" id="process">
-      <div class="wrap">
+      <div class="process-track">
+      <div class="process-stage">
+      <canvas class="process-canvas" aria-hidden="true"></canvas>
+      <span class="pill live-pill" aria-hidden="true"><span class="dot"></span>Live</span>
+      <div class="wrap process-inner">
         <span class="eyebrow reveal">How it works</span>
         <h2 class="reveal">Clear steps. No surprises.</h2>
         <ol class="steps">
@@ -187,6 +340,9 @@
             <p>Your site goes live, and I train your team to use the dashboard.</p>
           </li>
         </ol>
+        <div class="process-rail" aria-hidden="true"><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span></div>
+      </div>
+      </div>
       </div>
     </section>
 
@@ -197,7 +353,7 @@
           <span class="eyebrow reveal">Pricing</span>
           <h2 class="reveal">Two ways to pay.</h2>
           <p class="lead dark reveal">
-            Starting prices for a booking website. Every business is different,
+            Starting prices for a business website with online bookings. Every business is different,
             so your exact quote comes in writing after our free call.
           </p>
 
@@ -282,6 +438,38 @@
           </div>
         </div>
       </div>
+
+      <!-- FAQ: answers only repeat promises made elsewhere on this page. Edit freely. -->
+      <div class="wrap faq-block">
+        <span class="eyebrow reveal">FAQ</span>
+        <h3 class="faq-title reveal">Questions clients ask</h3>
+        <div class="faq-grid">
+          <details class="faq reveal">
+            <summary>How long does it take?</summary>
+            <p>About 5 weeks from our first call to launch. Bigger systems take longer, and you get the timeline in writing before we start.</p>
+          </details>
+          <details class="faq reveal">
+            <summary>Do I own the website?</summary>
+            <p>Yes. Your domain is registered in your name, and your content and customer data belong to you.</p>
+          </details>
+          <details class="faq reveal"> <!-- EDIT: add code handover here if you offer it -->
+            <summary>What if you disappear?</summary>
+            <p>Your domain and data are in your name, and we sign an agreement before any work starts, so you're never locked out of your own site.</p>
+          </details>
+          <details class="faq reveal">
+            <summary>What does the monthly fee cover?</summary>
+            <p>Hosting, updates, backups, and small edits like new photos, prices, or text.</p>
+          </details>
+          <details class="faq reveal">
+            <summary>Can I ask for changes?</summary>
+            <p>Yes. You get up to two rounds of changes on the preview before launch, then small edits each month.</p>
+          </details>
+          <details class="faq reveal">
+            <summary>How do I pay?</summary>
+            <p>In milestones, never 100% upfront. Payments go only to my real name, after each step is done.</p>
+          </details>
+        </div>
+      </div>
     </section>
 
     <!-- ============ CONTACT (light) ============ -->
@@ -290,18 +478,19 @@
         <span class="eyebrow reveal">Contact</span>
         <h2 class="reveal">Let's talk about your project.</h2>
         <div class="contact-grid">
-          <!-- Contact details are set in ONE place: the CONTACT list at the top of script.js -->
+          <!-- Contact details are set in ONE place: the CONTACT list at the top of script.js.
+               (Facebook has no card: the Messenger card opens your Facebook chat.) -->
+          <a class="contact reveal" data-contact="messenger" target="_blank" rel="noopener">
+            <span class="mono dim">Messenger</span><strong data-contact-text="messenger"></strong>
+          </a>
           <a class="contact reveal" data-contact="email">
             <span class="mono dim">Email</span><strong data-contact-text="email"></strong>
           </a>
-          <a class="contact reveal" data-contact="facebook" target="_blank" rel="noopener">
-            <span class="mono dim">Facebook</span><strong data-contact-text="facebook"></strong>
+          <a class="contact reveal" data-contact="phone">
+            <span class="mono dim">Phone</span><strong data-contact-text="phone"></strong>
           </a>
           <a class="contact reveal" data-contact="instagram" target="_blank" rel="noopener">
             <span class="mono dim">Instagram</span><strong data-contact-text="instagram"></strong>
-          </a>
-          <a class="contact reveal" data-contact="phone">
-            <span class="mono dim">Phone</span><strong data-contact-text="phone"></strong>
           </a>
           <a class="contact reveal" data-contact="github" target="_blank" rel="noopener">
             <span class="mono dim">GitHub</span><strong data-contact-text="github"></strong>
@@ -359,7 +548,8 @@
         </label>
         <label>Details<textarea name="details" rows="3" placeholder="What it's for, features, deadline…"></textarea></label>
         <button class="btn btn-dark full" value="send">Send by email</button>
-        <p class="dim small">Opens your email app, all filled in.</p>
+        <button type="button" class="btn btn-outline full" data-messenger>Message me on Messenger</button>
+        <p class="dim small" data-messenger-hint>Messenger copies your message to paste.</p>
       </div>
 
       <!-- Case 1: I already emailed them -->
@@ -387,5 +577,8 @@
   </button>
 
   <script src="script.js"></script>
+  <script src="models3d.js" defer></script>
+  <script src="shop3d.js" defer></script>
+  <script src="scroll3d.js" defer></script>
 </body>
 </html>

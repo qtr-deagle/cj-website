@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Isla Verde Resort — Booking demo</title>
+  <meta name="description" content="A booking website demo for a fictional beach resort, built by Christian Joshua Alamares. No real bookings or payments." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='800' font-size='28' fill='%23f2f0eb' text-anchor='middle'%3ECJ%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Reuses the portfolio's colors, buttons, pills and dialog; resort.css adds this page's own parts -->
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="resort.css" />
+</head>
+<body class="tex-light resort">
+
+  <!-- Always visible: this is a demo, not a real resort -->
+  <div class="demo-bar">
+    <span class="mono">Demo<span class="hide-sm"> by Christian Joshua Alamares</span> · no real bookings<span class="hide-sm"> or payments</span></span>
+    <a class="mono" href="../#work">← Portfolio</a>
+  </div>
+
+  <header class="r-head wrap">
+    <a class="r-logo" href="#" aria-label="Isla Verde Resort">
+      <span class="r-mark">IV</span><span>Isla Verde</span>
+    </a>
+    <div class="segmented" id="view-switch" aria-label="View">
+      <button class="seg active" data-view="guest">Guest view</button>
+      <button class="seg" data-view="owner">Owner dashboard</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ============ GUEST VIEW: what customers see ============ -->
+    <div class="view" data-view="guest">
+      <section class="r-hero">
+        <div>
+          <span class="eyebrow">Beachfront resort · fictional</span>
+          <h1>Isla Verde Resort</h1>
+          <p class="r-lead">Quiet rooms by the sea, a small pool, and breakfast on the sand. Pick a room, choose your dates, and book in under a minute.</p>
+          <div class="r-perks">
+            <span>Beachfront</span><span>Pool</span><span>Free breakfast</span><span>Wi-Fi</span>
+          </div>
+        </div>
+        <div class="r-stage" aria-hidden="true"><canvas></canvas></div>
+      </section>
+
+      <section class="r-book">
+        <div>
+          <div class="r-sub"><h2>Rooms</h2><span class="mono dim">Prices per night</span></div>
+          <div class="rooms" id="rooms"><!-- filled by resort.js --></div>
+        </div>
+
+        <!-- Booking card -->
+        <form class="bk" id="booking" novalidate>
+          <div class="r-sub"><h2>Book a stay</h2><span class="mono dim" data-bk-room>Garden Room</span></div>
+          <div class="bk-dates">
+            <label>Check-in<input type="date" name="in" required /></label>
+            <label>Check-out<input type="date" name="out" required /></label>
+          </div>
+          <div class="bk-row">
+            <span>Guests</span>
+            <div class="stepper">
+              <button type="button" data-step="-1" aria-label="Fewer guests">−</button>
+              <output data-guests>2</output>
+              <button type="button" data-step="1" aria-label="More guests">+</button>
+            </div>
+          </div>
+          <dl class="bk-lines">
+            <div><dt data-line-rate>₱3,500 × 2 nights</dt><dd data-line-sub>₱7,000</dd></div>
+            <div><dt>VAT 12%</dt><dd data-line-vat>₱840</dd></div>
+            <div class="bk-total"><dt>Total</dt><dd data-line-total>₱7,840</dd></div>
+          </dl>
+          <p class="bk-msg" data-bk-msg role="status"></p>
+          <button class="btn btn-dark full" type="submit">Reserve</button>
+          <p class="bk-fine mono dim">Demo · no payment taken</p>
+        </form>
+      </section>
+    </div>
+
+    <!-- ============ OWNER VIEW: what the resort staff see ============ -->
+    <div class="view" data-view="owner" hidden>
+      <div class="o-tiles">
+        <div class="o-tile"><span class="mono dim">Bookings</span><strong data-stat="count">0</strong></div>
+        <div class="o-tile"><span class="mono dim">Nights booked</span><strong data-stat="nights">0</strong></div>
+        <div class="o-tile"><span class="mono dim">Revenue</span><strong data-stat="revenue">₱0</strong></div>
+        <div class="o-tile"><span class="mono dim">Occupancy · <span data-stat="month">Nov</span></span><strong data-stat="occ">0%</strong></div>
+      </div>
+
+      <div class="o-bar">
+        <input class="o-search" type="search" placeholder="Search bookings" aria-label="Search bookings" />
+        <button class="btn btn-sm btn-outline" type="button" data-reset>Reset demo</button>
+      </div>
+
+      <div class="o-list" id="bookings">
+        <button class="o-add" type="button" data-add>+ Add a booking</button>
+        <!-- rows filled by resort.js -->
+      </div>
+      <p class="o-note mono dim">Bookings you make are saved in this browser only.</p>
+    </div>
+  </main>
+
+  <!-- ============ RESERVE DIALOG ============ -->
+  <dialog class="dialog" id="reserve">
+    <form method="dialog" class="dialog-card" id="reserve-form">
+      <div class="dialog-head">
+        <div>
+          <h3>Confirm your stay</h3>
+          <p class="dim" data-summary>Garden Room · Nov 8 – Nov 10 · 2 guests</p>
+        </div>
+        <button type="button" class="x" data-close aria-label="Close">×</button>
+      </div>
+
+      <div class="panel" data-step="details">
+        <label>Full name<input name="name" autocomplete="name" required /></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+        <p class="bk-msg" data-form-msg role="status"></p>
+        <button class="btn btn-dark full" value="confirm" data-confirm-total>Confirm · ₱7,840</button>
+        <p class="dim small">Demo · no payment taken</p>
+      </div>
+
+      <div class="panel" data-step="done" hidden>
+        <div class="note">
+          <span class="note-ic">✓</span>
+          <div>
+            <strong>Booked! Code <span data-code>IVR-0000</span></strong>
+            <p>A real site would email this to you and to the resort. Check the Owner dashboard to see it appear.</p>
+          </div>
+        </div>
+        <button class="btn btn-dark full" type="button" data-see-owner>See it in the Owner dashboard</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="../models3d.js"></script>
+  <script src="resort.js"></script>
+</body>
+</html>
