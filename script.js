@@ -144,7 +144,6 @@ const sectionWatcher = new IntersectionObserver((entries) => {
 }, { rootMargin: "-50% 0px -50% 0px" });
 document.querySelectorAll("main > section").forEach((s) => sectionWatcher.observe(s));
 addEventListener("resize", paintDock);
-
 /* ---------- Payment plan hover: bar segment <-> matching box ---------- */
 const plan = document.querySelector(".plan");
 const highlight = (step) => {
